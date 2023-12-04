@@ -1,9 +1,8 @@
 # EECS3201Project
 
 
+//CALCULATOR
 
-
-// CALCULATOR 
 module Calculator(
     input [3:0] operand1,  
     input [3:0] operand2,  
@@ -26,12 +25,12 @@ module Calculator(
     always @(posedge clk) begin
         if (calculate) begin
             if (opSelect == 0) begin
-                
-                result <= operand1 * operand2;
+                // Using only the LSB of each operand
+                result <= operand1[0] * operand2[0];
             end else begin
-                
-                if (operand2 != 0) begin
-                    result <= operand1 / operand2;
+                // For division, use the 2 LSBs of operand1 and the LSB of operand2
+                if (operand2[0] != 0) begin
+                    result <= operand1[1:0] / operand2[0];
                 end else begin
                     result <= 0; // Handle division by zero
                 end
@@ -41,14 +40,5 @@ module Calculator(
 
 endmodule
 
-//controlling the seven-segment display
-module SevenSegmentDisplay(
-    input [3:0] number,
-    output reg [6:0] seg,
-    output reg [3:0] an
-);
+// Someone should put the seven segment code here
 
-    // display logic will coded here take note
-    
-
-endmodule
