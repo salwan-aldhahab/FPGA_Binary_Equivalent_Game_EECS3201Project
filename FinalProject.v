@@ -20,6 +20,13 @@ reg [3:0] firstDigit, secondDigit;
 
 wire [3:0] randomNum1, randomNum2, randomNum3;
 
+reg [2:0] life;
+
+//Define lives
+life[0] = led[0];
+life[1] = led[1];
+life[2] = led[2];
+
 wire [7:0] binary;
 
 ClockDivider clock(cin, cout);
@@ -42,9 +49,26 @@ end
 
 // for random number
 sevenSegDisplay(randomNum1%10, hex0);
-sevenSegDisplay(randomNum2%10, hex1);
-sevenSegDisplay(randomNum3%10, hex2);
-sevenSegDisplay(letterU, hex3);
+//sevenSegDisplay(randomNum2%10, hex1);
+//sevenSegDisplay(randomNum3%10, hex2);
+
+//YOU WIN
+//SevenSegLetters (.letter(4'b0000), .sevenSeg(hex4)); //U
+//SevenSegLetters (.letter(4'b0101), .sevenSeg(hex2)); //w
+//SevenSegLetters (.letter(4'b0110), .sevenSeg(hex1)); //I
+//SevenSegLetters (.letter(4'b0111), .sevenSeg(hex0)); //N
+//SevenSegLetters (.letter(4'b1111), .sevenSeg(hex3)); //OFF
+//SevenSegLetters (.letter(4'b1111), .sevenSeg(hex5)); //OFF
+
+//YOU LOSE
+//SevenSegLetters (.letter(4'b0000), .sevenSeg(hex5)); //U
+//SevenSegLetters (.letter(4'b0001), .sevenSeg(hex3)); //L
+//SevenSegLetters (.letter(4'b0010), .sevenSeg(hex2)); //O
+//SevenSegLetters (.letter(4'b0011), .sevenSeg(hex1)); //S
+//SevenSegLetters (.letter(4'b0100), .sevenSeg(hex0)); //E
+//SevenSegLetters (.letter(4'b1111), .sevenSeg(hex4)); //OFF
+
+
 
 Converter decimalToBinary({randomNum1%10 ,randomNum2%10 ,randomNum1%10}, binary);
 
@@ -103,7 +127,28 @@ endmodule
 
 //-----------------------------------------
 
+module SevenSegLetters (
+    input [3:0] letter,
+    output reg [7:0] sevenSeg
+);
 
+    always @* begin
+        case (letter)
+            4'b0000: sevenSeg = 8'b11000001; // Letter U
+            4'b0001: sevenSeg = 8'b11000111; // Letter L
+            4'b0010: sevenSeg = 8'b11000000; // Letter O
+            4'b0011: sevenSeg = 8'b10010010; // Letter S
+            4'b0100: sevenSeg = 8'b10000110; // Letter E
+            4'b0101: sevenSeg = 8'b11010101; // Letter W
+				4'b0110: sevenSeg = 8'b11111001; // Letter I
+				4'b0111: sevenSeg = 8'b11001000; // Letter N
+				4'b1111: sevenSeg = 8'b11111111; //Everything Off	
+			   //default case for No letters
+            default: sevenSeg = 8'b11111111; 
+        endcase
+    end
+
+endmodule
 
 //-----------------------------------------
 
