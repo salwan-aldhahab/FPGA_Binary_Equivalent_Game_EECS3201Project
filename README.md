@@ -42,3 +42,14 @@ endmodule
 
 // Someone should put the seven segment code here
 
+// Counter issue. 
+always @(posedge clk or negedge reset) begin
+    if (~reset) begin
+        counter <= 60; // 60 seconds initialization
+        // some logic ........... guilliano assist here
+    end else begin
+        // ... countdown and level logic
+    end
+end
+
+
